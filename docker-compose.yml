@@ -2,7 +2,8 @@ version: '3.9'
 
 services:
   mysql:
-    image: mysql:8.0
+    build: ./database
+    image: custom-mysql:1.0
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: loginapp
@@ -14,11 +15,10 @@ services:
       - webapp
 
   app:
-    image: nginx:latest
+    build: ./webapp
+    image: custom-nginx:1.0
     ports:
       - "8081:80"
-    volumes:
-      - app_data:/usr/share/nginx/html
     deploy:
       replicas: 3
     networks:
@@ -26,7 +26,6 @@ services:
 
 volumes:
   db_data:
-  app_data:
 
 networks:
   webapp:
